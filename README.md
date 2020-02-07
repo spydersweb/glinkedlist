@@ -3,13 +3,13 @@ glinkedlist is a GO implementation of a linked list of strings
 
 ## Import
 
-import linkedList "github.com/spydersweb/glinkedlist"
+    import linkedList "github.com/spydersweb/glinkedlist"
 
 ## Initialise
 
 To generate a stack we call the .Stack{} method which initialises the head and tail nodes of the list to nil
 
-stack := linkedList.Stack{}
+    stack := linkedList.Stack{}
 
 ## Methods
 
