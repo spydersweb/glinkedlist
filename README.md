@@ -14,5 +14,7 @@ stack := linkedList.Stack{}
 ## Methods
 
 Push(s string) -  Adds a string value to the stack
+
 Pop() - Removes the top of the stack and returns the popped Node
+
 Remove(s string) - Removes the Node with the matched string
