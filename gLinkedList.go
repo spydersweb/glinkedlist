@@ -1,5 +1,7 @@
 package glinkedlist
 
+import "fmt"
+
 //Stack tracks the linked list head and tail
 type Stack struct {
 	Head *Node
@@ -45,6 +47,7 @@ func (s *Stack) Remove(value string) Node {
 
 	testNode := *s.Head
 
+	fmt.Println(testNode)
 	var returnNode Node = Node{}
 	var prevNode Node = Node{}
 
@@ -68,6 +71,8 @@ func (s *Stack) Remove(value string) Node {
 			// and return testNode
 			if nextNode.Pointer != nil {
 				prevNode.Pointer = &nextNode
+			} else {
+				prevNode.Pointer = nil
 			}
 
 			returnNode = testNode
