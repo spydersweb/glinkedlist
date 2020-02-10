@@ -39,33 +39,33 @@ func (s *Stack) Push(value string) {
 		n.Pointer = s.Head
 		s.Head = &n
 	}
+	fmt.Printf("\nPushing:\nPointer to n: %p\t%v\n", &n, n)
 }
 
 // Remove takes a string value and removes the node with that value
 // re-assigning the node pointers before and after the node being removed
 func (s *Stack) Remove(value string) Node {
 
-	testNode := *s.Head
+	currentNode := *s.Head
 
-	fmt.Println(testNode)
-	var returnNode Node = Node{}
-	var prevNode Node = Node{}
+	var returnNode Node
 
 	for {
-		nextNode := *testNode.Pointer
+		prevNode := currentNode
+		nextNode := *currentNode.Pointer
 
 		// break the loop if we have hit the tail
-		if testNode.Pointer == nil {
+		if currentNode.Pointer == nil {
 			break
 		}
 
 		// first iteration, basically the head of the stack
 		// then we are removing the head of the stack only, popping
-		if testNode.Data == value && testNode == *s.Head {
+		if currentNode.Data == value && currentNode == *s.Head {
 			returnNode = s.Pop()
 			break
 
-		} else if testNode.Data == value {
+		} else if currentNode.Data == value {
 
 			// Reassign prevNode's pointer to the testNode.Pointer element
 			// and return testNode
@@ -75,15 +75,12 @@ func (s *Stack) Remove(value string) Node {
 				prevNode.Pointer = nil
 			}
 
-			returnNode = testNode
+			returnNode = currentNode
 			break
 		}
 
-		// Assign the current Node to the prevNode variable
-		prevNode = testNode
-
 		// get the next Node in the stack
-		testNode = *testNode.Pointer
+		currentNode = *currentNode.Pointer
 
 	}
 
@@ -91,13 +88,13 @@ func (s *Stack) Remove(value string) Node {
 }
 
 //Iterate loops through the stack of linked nodes
-func (s *Stack) Iterate(f func(n Node)) {
+func (s *Stack) Iterate(f func(n *Node)) {
 
 	node := *s.Head
 
 	for {
 		if f != nil {
-			f(node)
+			f(&node)
 		}
 
 		if node.Pointer == nil {
