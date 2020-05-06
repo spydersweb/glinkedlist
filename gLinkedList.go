@@ -18,11 +18,11 @@ type Node struct {
 
 // Pop takes the top node from the linked list and returns
 func (s *Stack) Pop() Node {
-	// Get a reference to the head node
+	// Get a reference to the Tail node
 	nodePopped := *s.Tail
 	ptr := s.Head
 
-	// Loop through the linkedList to find the preceding pointer
+	// Loop through the linkedList to find the preceding pointer reference
 	for {
 		node := *ptr
 		if node.Pointer == s.Tail {
