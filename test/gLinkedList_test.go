@@ -14,12 +14,18 @@ func TestLinkedListHeadandTail(t *testing.T) {
 
 	// Test the Head matches the first seedData item
 	if l.Head.Data != seedData[0] {
-		t.Errorf("Error in linked list Head data, expected %s, got %s", seedData[0], l.Head.Data)
+		t.Errorf("Error in linked list Head data, expected %s, got %s",
+			seedData[0],
+			l.Head.Data,
+		)
 	}
 
 	// Test the Tail matches the last seedData item
 	if l.Tail.Data != seedData[len(seedData) - 1] {
-		t.Errorf("Error in linked list Head data, expected %s, got %s", seedData[0], l.Tail.Data)
+		t.Errorf("Error in linked list Head data, expected %s, got %s",
+			seedData[0],
+			l.Tail.Data,
+		)
 	}
 
 }
@@ -38,7 +44,10 @@ func TestIterationDataMatchesSeedData(t *testing.T) {
 		}
 
 		if node.Data != seedData[counter] {
-			t.Errorf("Iterating through list found mismatched linkedList and seed value data.  Exp: %s, Got: %s", seedData[counter], node.Data)
+			t.Errorf("Iterating through list found mismatched linkedList and seed value data.  Exp: %s, Got: %s",
+				seedData[counter],
+				node.Data,
+			)
 		}
 
 		ptr = node.Pointer
@@ -53,7 +62,10 @@ func TestListCountMatchesSeed(t *testing.T) {
 
 	// Test that the seedData count matches the linkedList count
 	if l.Count != len(seedData) {
-		t.Errorf("List count does not match seedData count. Exp: %d, Got: %d", len(seedData), l.Count)
+		t.Errorf("List count does not match seedData count. Exp: %d, Got: %d",
+			len(seedData),
+			l.Count,
+		)
 	}
 }
 
@@ -66,7 +78,10 @@ func TestListPopping(t *testing.T){
 
 	node := l.Pop()
 	if node.Data != seedData[lastIndex] {
-		t.Errorf("Popped node Data doesn't match last item of seed data. Exp: %s, Got: %s", seedData[lastIndex], node.Data)
+		t.Errorf("Popped node Data doesn't match last item of seed data. Exp: %s, Got: %s",
+			seedData[lastIndex],
+			node.Data,
+		)
 	}
 
 	// Check the Count of the linkedList
@@ -74,12 +89,18 @@ func TestListPopping(t *testing.T){
 	lastIndex = len(seedDataAfterPopping) - 1
 
 	if len(seedDataAfterPopping) != l.Count {
-		t.Errorf("LinkedList Count does not match popped list length. Exp: %d, Got: %d", len(seedDataAfterPopping), l.Count)
+		t.Errorf("LinkedList Count does not match popped list length. Exp: %d, Got: %d",
+			len(seedDataAfterPopping),
+			l.Count,
+		)
 	}
 
 	// Check the Tail Data matches the new slice data
 	if l.Tail.Data != seedDataAfterPopping[lastIndex] {
-		t.Errorf("linkedList Tail should have been updated to the new value. Exp: %s, Got: %s",seedDataAfterPopping[lastIndex], l.Tail.Data )
+		t.Errorf("linkedList Tail should have been updated to the new value. Exp: %s, Got: %s",
+			seedDataAfterPopping[lastIndex],
+			l.Tail.Data,
+		)
 	}
 
 }
@@ -104,12 +125,18 @@ func TestRemoveListItem(t *testing.T) {
 
 	// Test the linkedList count now matches the removedData count
 	if len(removedData) != l.Count {
-		t.Errorf("New list count doesn't match the removed list count.  Exp: %d, Got: %d", len(removedData), l.Count)
+		t.Errorf("New list count doesn't match the removed list count.  Exp: %d, Got: %d",
+			len(removedData),
+			l.Count,
+		)
 	}
 
 	// Test the removed Node
 	if removedNode != testRemovedNode {
-		t.Errorf("Removed Node doesn't match dummy Removed Node. Exp: %v, Got: %v", testRemovedNode, removedNode)
+		t.Errorf("Removed Node doesn't match dummy Removed Node. Exp: %v, Got: %v",
+			testRemovedNode,
+			removedNode,
+		)
 	}
 }
 
@@ -125,7 +152,8 @@ func TestRemoveHeadUsingRemove(t *testing.T) {
 	if l.Head != expectedNewHead {
 		t.Errorf("Head Pointer doesn't match expected Head Pointer. Exp: %p, Got: %p",
 			expectedNewHead,
-			l.Head)
+			l.Head,
+		)
 	}
 }
 
