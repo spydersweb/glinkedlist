@@ -1,9 +1,13 @@
 package glinkedlist
 
+import "fmt"
+
 //Stack tracks the linked list head and tail
 type Stack struct {
 	Head *Node
 	Tail *Node
+	Count int
+	Debug bool
 }
 
 // Node is a linked list item
@@ -14,11 +18,22 @@ type Node struct {
 
 // Pop takes the top node from the linked list and returns
 func (s *Stack) Pop() Node {
-	// Get a reference to the head node
-	nodePopped := *s.Head
+	// Get a reference to the Tail node
+	nodePopped := *s.Tail
+	ptr := s.Head
 
-	// Set the head of the stack to its next pointer
-	*s.Head = *nodePopped.Pointer
+	// Loop through the linkedList to find the preceding pointer reference
+	for {
+		node := *ptr
+		if node.Pointer == s.Tail {
+			s.Tail = &node
+			break
+		}
+		ptr = node.Pointer
+	}
+
+	// Reduce the counter by 1
+	s.Count--
 	return nodePopped
 }
 
@@ -27,77 +42,95 @@ func (s *Stack) Pop() Node {
 func (s *Stack) Push(value string) {
 
 	// Create a new node
-	n := Node{value, nil}
+	newNode := Node{value, nil}
 
-	// On first initialisation the head will always be nil
 	if s.Head == nil {
-		s.Head = &n
+		// First iteration set the head to the newNode
+		s.Head = &newNode
+	} else if s.Count == 1 {
+		// Second iteration we set the head nodes pointer to the newNode
+		s.Head.Pointer = &newNode
 	} else {
-		// update the head of the stack to the newly generated node pointer
-		n.Pointer = s.Head
-		s.Head = &n
+		// Subsequent iterations we set the tail nodes pointer to the newNode
+		s.Tail.Pointer = &newNode
+	}
+
+	// Set the tail to the newNode
+	s.Tail = &newNode
+
+	// Increment the counter
+	s.Count++
+
+	// Output debug if needed
+	if s.Debug {
+		fmt.Printf("Pushing:\nPointer to n: %p\t%v\n", &newNode, newNode)
+		fmt.Printf("Current Stack: %v\n", s)
 	}
 }
 
 // Remove takes a string value and removes the node with that value
 // re-assigning the node pointers before and after the node being removed
-func (s *Stack) Remove(value string) Node {
+func (s *Stack) Remove(value string) (returnNode Node) {
 
-	testNode := *s.Head
-
-	var returnNode Node = Node{}
-	var prevNode Node = Node{}
+	// Start at the head
+	ptr := s.Head
+	node := *ptr
+	var previousNodePtr *Node
 
 	for {
-		nextNode := *testNode.Pointer
+		if node.Data == value {
 
-		// break the loop if we have hit the tail
-		if testNode.Pointer == nil {
-			break
-		}
-
-		// first iteration, basically the head of the stack
-		// then we are removing the head of the stack only, popping
-		if testNode.Data == value && testNode == *s.Head {
-			returnNode = s.Pop()
-			break
-
-		} else if testNode.Data == value {
-
-			// Reassign prevNode's pointer to the testNode.Pointer element
-			// and return testNode
-			if nextNode.Pointer != nil {
-				prevNode.Pointer = &nextNode
+			if ptr == s.Head {
+				// Am I removing the Head
+				s.Head = node.Pointer
+			} else if ptr == s.Tail {
+				// Am I removing the Tail
+				s.Tail = previousNodePtr
+			} else {
+				// Am I removing anything else
+				if previousNodePtr != nil {
+					previousNodePtr.Pointer = node.Pointer
+				}
 			}
 
-			returnNode = testNode
-			break
+			// Remove any pointer reference
+			returnNode = node
+			returnNode.Pointer = nil
+
+			s.Count--
+			return
 		}
 
-		// Assign the current Node to the prevNode variable
-		prevNode = testNode
+		// Break out of the loop if don't find the string
+		if node.Pointer == nil {
+			return
+		}
 
-		// get the next Node in the stack
-		testNode = *testNode.Pointer
+		// Assign the previous node to the current node
+		previousNodePtr = ptr
 
+		// Get the next node in the list
+		if node.Pointer != nil {
+			ptr = node.Pointer
+			node = *ptr
+		}
 	}
-
-	return returnNode
 }
 
 //Iterate loops through the stack of linked nodes
-func (s *Stack) Iterate(f func(n Node)) {
+func (s *Stack) Iterate(f func(n *Node)) {
 
 	node := *s.Head
 
 	for {
 		if f != nil {
-			f(node)
+			f(&node)
 		}
 
 		if node.Pointer == nil {
 			break
+		} else {
+			node = *node.Pointer
 		}
-		node = *node.Pointer
 	}
 }
