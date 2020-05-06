@@ -70,47 +70,51 @@ func (s *Stack) Push(value string) {
 
 // Remove takes a string value and removes the node with that value
 // re-assigning the node pointers before and after the node being removed
-func (s *Stack) Remove(value string) Node {
+func (s *Stack) Remove(value string) (returnNode Node) {
 
-	currentNode := *s.Head
-
-	var returnNode Node
+	// Start at the head
+	ptr := s.Head
+	node := *ptr
+	var previousNodePtr *Node
 
 	for {
-		prevNode := currentNode
-		nextNode := *currentNode.Pointer
+		if node.Data == value {
 
-		// break the loop if we have hit the tail
-		if currentNode.Pointer == nil {
-			break
-		}
-
-		// first iteration, basically the head of the stack
-		// then we are removing the head of the stack only, popping
-		if currentNode.Data == value && currentNode == *s.Head {
-			returnNode = s.Pop()
-			break
-
-		} else if currentNode.Data == value {
-
-			// Reassign prevNode's pointer to the testNode.Pointer element
-			// and return testNode
-			if nextNode.Pointer != nil {
-				prevNode.Pointer = &nextNode
+			if ptr == s.Head {
+				// Am I removing the Head
+				s.Head = node.Pointer
+			} else if ptr == s.Tail {
+				// Am I removing the Tail
+				s.Tail = previousNodePtr
 			} else {
-				prevNode.Pointer = nil
+				// Am I removing anything else
+				if previousNodePtr != nil {
+					previousNodePtr.Pointer = node.Pointer
+				}
 			}
 
-			returnNode = currentNode
-			break
+			// Remove any pointer reference
+			returnNode = node
+			returnNode.Pointer = nil
+
+			s.Count--
+			return
 		}
 
-		// get the next Node in the stack
-		currentNode = *currentNode.Pointer
+		// Break out of the loop if don't find the string
+		if node.Pointer == nil {
+			return
+		}
 
+		// Assign the previous node to the current node
+		previousNodePtr = ptr
+
+		// Get the next node in the list
+		if node.Pointer != nil {
+			ptr = node.Pointer
+			node = *ptr
+		}
 	}
-
-	return returnNode
 }
 
 //Iterate loops through the stack of linked nodes
@@ -126,6 +130,8 @@ func (s *Stack) Iterate(f func(n *Node)) {
 		if node.Pointer == nil {
 			break
 		}
-		node = *node.Pointer
+		if node.Pointer != nil {
+			node = *node.Pointer
+		}
 	}
 }

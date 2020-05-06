@@ -5,20 +5,19 @@ import (
 	"testing"
 )
 
-var (
-	seedData = []string{"harry", "sharon", "graham"}
-)
 
 func TestLinkedListHeadandTail(t *testing.T) {
 
 	l := ll.Stack{}
 
-	seedLinkedList(&l, seedData)
+	seedData := seedLinkedList(&l, []string{})
 
+	// Test the Head matches the first seedData item
 	if l.Head.Data != seedData[0] {
 		t.Errorf("Error in linked list Head data, expected %s, got %s", seedData[0], l.Head.Data)
 	}
 
+	// Test the Tail matches the last seedData item
 	if l.Tail.Data != seedData[len(seedData) - 1] {
 		t.Errorf("Error in linked list Head data, expected %s, got %s", seedData[0], l.Tail.Data)
 	}
@@ -28,7 +27,7 @@ func TestLinkedListHeadandTail(t *testing.T) {
 func TestIterationDataMatchesSeedData(t *testing.T) {
 	l := ll.Stack{}
 
-	seedLinkedList(&l, seedData)
+	seedData := seedLinkedList(&l, []string{})
 
 	ptr := l.Head
 	counter := 0
@@ -50,8 +49,9 @@ func TestIterationDataMatchesSeedData(t *testing.T) {
 func TestListCountMatchesSeed(t *testing.T) {
 	l := ll.Stack{}
 
-	seedLinkedList(&l, seedData)
+	seedData := seedLinkedList(&l, []string{})
 
+	// Test that the seedData count matches the linkedList count
 	if l.Count != len(seedData) {
 		t.Errorf("List count does not match seedData count. Exp: %d, Got: %d", len(seedData), l.Count)
 	}
@@ -60,7 +60,7 @@ func TestListCountMatchesSeed(t *testing.T) {
 func TestListPopping(t *testing.T){
 	l := ll.Stack{}
 
-	seedLinkedList(&l, seedData)
+	seedData := seedLinkedList(&l, []string{})
 
 	lastIndex := len(seedData) - 1
 
@@ -84,8 +84,61 @@ func TestListPopping(t *testing.T){
 
 }
 
-func seedLinkedList(ll *ll.Stack, values []string) {
-	for _,n := range values {
+func TestRemoveListItem(t *testing.T) {
+	l := ll.Stack{}
+
+	removeValue := "Barbara"
+	seedData := seedLinkedList(&l, []string{"John", "Jack", "Barbara", "Tony", "Harry"})
+
+	var removedData = []string{}
+	removedData = append(seedData[0:2], seedData[3:]...)
+
+	removedNode := l.Remove(removeValue)
+
+	testRemovedNode := ll.Node{removeValue, nil}
+
+	// Test the removed Node has a nil pointer reference
+	if removedNode.Pointer != nil {
+		t.Errorf("Removed node pointer ref should be nil but got %p", removedNode.Pointer)
+	}
+
+	// Test the linkedList count now matches the removedData count
+	if len(removedData) != l.Count {
+		t.Errorf("New list count doesn't match the removed list count.  Exp: %d, Got: %d", len(removedData), l.Count)
+	}
+
+	// Test the removed Node
+	if removedNode != testRemovedNode {
+		t.Errorf("Removed Node doesn't match dummy Removed Node. Exp: %v, Got: %v", testRemovedNode, removedNode)
+	}
+}
+
+func TestRemoveHeadUsingRemove(t *testing.T) {
+	l := ll.Stack{}
+
+	removeValue := "John"
+	_ = seedLinkedList(&l, []string{"John", "Jack", "Barbara", "Tony", "Harry"})
+	expectedNewHead := l.Head.Pointer
+
+	l.Remove(removeValue)
+
+	if l.Head != expectedNewHead {
+		t.Errorf("Head Pointer doesn't match expected Head Pointer. Exp: %p, Got: %p",
+			expectedNewHead,
+			l.Head)
+	}
+}
+
+func seedLinkedList(ll *ll.Stack, values []string) (seed []string){
+
+	seed = []string{"harry", "sharon", "graham"}
+	if len(values) != 0 {
+		seed = values
+	}
+
+	for _,n := range seed {
 		ll.Push(n)
 	}
+
+	return
 }
