@@ -6,6 +6,8 @@ import "fmt"
 type Stack struct {
 	Head *Node
 	Tail *Node
+	Count int
+	Debug bool
 }
 
 // Node is a linked list item
@@ -29,17 +31,30 @@ func (s *Stack) Pop() Node {
 func (s *Stack) Push(value string) {
 
 	// Create a new node
-	n := Node{value, nil}
+	newNode := Node{value, nil}
 
-	// On first initialisation the head will always be nil
 	if s.Head == nil {
-		s.Head = &n
+		// First iteration set the head to the newNode
+		s.Head = &newNode
+	} else if s.Count == 1 {
+		// Second iteration we set the head nodes pointer to the newNode
+		s.Head.Pointer = &newNode
 	} else {
-		// update the head of the stack to the newly generated node pointer
-		n.Pointer = s.Head
-		s.Head = &n
+		// Subsequent iterations we set the tail nodes pointer to the newNode
+		s.Tail.Pointer = &newNode
 	}
-	fmt.Printf("\nPushing:\nPointer to n: %p\t%v\n", &n, n)
+
+	// Set the tail to the newNode
+	s.Tail = &newNode
+
+	// Increment the counter
+	s.Count++
+
+	// Output debug if needed
+	if s.Debug {
+		fmt.Printf("Pushing:\nPointer to n: %p\t%v\n", &newNode, newNode)
+		fmt.Printf("Current Stack: %v\n", s)
+	}
 }
 
 // Remove takes a string value and removes the node with that value
