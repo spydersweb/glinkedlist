@@ -129,8 +129,7 @@ func (s *Stack) Iterate(f func(n *Node)) {
 
 		if node.Pointer == nil {
 			break
-		}
-		if node.Pointer != nil {
+		} else {
 			node = *node.Pointer
 		}
 	}
