@@ -47,6 +47,16 @@ func TestIterationDataMatchesSeedData(t *testing.T) {
 	}
 }
 
+func TestListCountMatchesSeed(t *testing.T) {
+	l := ll.Stack{}
+
+	seedLinkedList(&l, seedData)
+
+	if l.Count != len(seedData) {
+		t.Errorf("List count does not match seedData count. Exp: %d, Got: %d", len(seedData), l.Count)
+	}
+}
+
 func seedLinkedList(ll *ll.Stack, values []string) {
 	for _,n := range values {
 		ll.Push(n)
