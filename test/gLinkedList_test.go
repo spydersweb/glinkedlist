@@ -57,6 +57,33 @@ func TestListCountMatchesSeed(t *testing.T) {
 	}
 }
 
+func TestListPopping(t *testing.T){
+	l := ll.Stack{}
+
+	seedLinkedList(&l, seedData)
+
+	lastIndex := len(seedData) - 1
+
+	node := l.Pop()
+	if node.Data != seedData[lastIndex] {
+		t.Errorf("Popped node Data doesn't match last item of seed data. Exp: %s, Got: %s", seedData[lastIndex], node.Data)
+	}
+
+	// Check the Count of the linkedList
+	seedDataAfterPopping := seedData[0:2]
+	lastIndex = len(seedDataAfterPopping) - 1
+
+	if len(seedDataAfterPopping) != l.Count {
+		t.Errorf("LinkedList Count does not match popped list length. Exp: %d, Got: %d", len(seedDataAfterPopping), l.Count)
+	}
+
+	// Check the Tail Data matches the new slice data
+	if l.Tail.Data != seedDataAfterPopping[lastIndex] {
+		t.Errorf("linkedList Tail should have been updated to the new value. Exp: %s, Got: %s",seedDataAfterPopping[lastIndex], l.Tail.Data )
+	}
+
+}
+
 func seedLinkedList(ll *ll.Stack, values []string) {
 	for _,n := range values {
 		ll.Push(n)
