@@ -1,10 +1,10 @@
 package main
 
 import (
-	ll "glinkedlist"
 	"testing"
-)
 
+	ll "github.com/spydersweb/glinkedlist"
+)
 
 func TestLinkedListHeadandTail(t *testing.T) {
 
@@ -21,7 +21,7 @@ func TestLinkedListHeadandTail(t *testing.T) {
 	}
 
 	// Test the Tail matches the last seedData item
-	if l.Tail.Data != seedData[len(seedData) - 1] {
+	if l.Tail.Data != seedData[len(seedData)-1] {
 		t.Errorf("Error in linked list Head data, expected %s, got %s",
 			seedData[0],
 			l.Tail.Data,
@@ -69,7 +69,7 @@ func TestListCountMatchesSeed(t *testing.T) {
 	}
 }
 
-func TestListPopping(t *testing.T){
+func TestListPopping(t *testing.T) {
 	l := ll.Stack{}
 
 	seedData := seedLinkedList(&l, []string{})
@@ -157,14 +157,14 @@ func TestRemoveHeadUsingRemove(t *testing.T) {
 	}
 }
 
-func seedLinkedList(ll *ll.Stack, values []string) (seed []string){
+func seedLinkedList(ll *ll.Stack, values []string) (seed []string) {
 
 	seed = []string{"harry", "sharon", "graham"}
 	if len(values) != 0 {
 		seed = values
 	}
 
-	for _,n := range seed {
+	for _, n := range seed {
 		ll.Push(n)
 	}
 

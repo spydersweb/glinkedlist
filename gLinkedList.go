@@ -2,17 +2,24 @@ package glinkedlist
 
 import "fmt"
 
-//Stack tracks the linked list head and tail
+type LinkedList interface {
+	Pop() Node
+	Push(value interface{})
+	Remove(value interface{}) Node
+	Iterate(func(*Node))
+}
+
+// Stack tracks the linked list head and tail
 type Stack struct {
-	Head *Node
-	Tail *Node
+	Head  *Node
+	Tail  *Node
 	Count int
 	Debug bool
 }
 
 // Node is a linked list item
 type Node struct {
-	Data    string
+	Data    interface{}
 	Pointer *Node
 }
 
@@ -39,7 +46,7 @@ func (s *Stack) Pop() Node {
 
 // Push generates a new node for the linked list and assigns a pointer
 // reference if necessary
-func (s *Stack) Push(value string) {
+func (s *Stack) Push(value interface{}) {
 
 	// Create a new node
 	newNode := Node{value, nil}
@@ -70,7 +77,7 @@ func (s *Stack) Push(value string) {
 
 // Remove takes a string value and removes the node with that value
 // re-assigning the node pointers before and after the node being removed
-func (s *Stack) Remove(value string) (returnNode Node) {
+func (s *Stack) Remove(value interface{}) (returnNode Node) {
 
 	// Start at the head
 	ptr := s.Head
@@ -117,7 +124,7 @@ func (s *Stack) Remove(value string) (returnNode Node) {
 	}
 }
 
-//Iterate loops through the stack of linked nodes
+// Iterate loops through the stack of linked nodes
 func (s *Stack) Iterate(f func(n *Node)) {
 
 	node := *s.Head
